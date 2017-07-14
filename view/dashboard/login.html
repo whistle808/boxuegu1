@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学IT - 后台管理系统</title>
+    <?php include '/view/common/css.html'?>
+</head>
+<body>
+    <!-- 登录 -->
+    <div class="login">
+        <div class="login-wrap">
+            <div class="avatar">
+                <img src="/view/public/uploads/monkey.png" class="img-circle" alt="">
+            </div>
+            <form id="formId" class="col-md-offset-1 col-md-10">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon">
+                        <i class="fa fa-user"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="用户名" value="前端学院" name="tc_name">
+                </div>
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon">
+                        <i class="fa fa-key"></i>
+                    </span>
+                    <input type="password" class="form-control" placeholder="密码" value="123456" name="tc_pass">
+                </div>
+                <button type="submit" class="btn btn-lg btn-primary btn-block">登 录</button>
+            </form>
+        </div>
+    </div>
+    
+    <?php include '/view/common/script.html'?>
+</body>
+</html>
+<script>
+    // $('#formId').on('click','.btn-lg',function(){
+    //     alert("234");
+    //     return false;
+    // })
+    $('#formId').submit(function(){
+        var data = $(this).serializeArray();
+        // console.log(data);
+        $.ajax({
+            url:'/api/login',
+            type:'post',
+            data:data,
+            success:function(info){
+                if(info.code==200){
+                    // 请求成功,将数据转换成字符串保存在cookie中
+                    $.cookie('tcInfo',JSON.stringify(info.result));
+                    alert('登陆成功');
+                }
+                location.href = 'index';
+            },
+            error:function(errorInfo){
+                console.log("您输入的密码或者用户名错误")
+            }
+
+        })
+        return false;
+    })
+</script>
